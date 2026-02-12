@@ -1,6 +1,7 @@
 @model LuckySpin.ViewModels.PlayersChoice
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using LuckySpin.Models;
+@using Microsoft.AspNetCore.Mvc.Rendering
 @{
     Layout = "_Layout";
     //TODO: After getting the other TODOs complete and running.
@@ -16,7 +17,10 @@
     <label>
         <!-- TODO: Create a dropdown list of Players to choose from, displaying their name and luck number. 
         (see the Index view for an example of how to do this with tag helpers) -->
-       
+        <span>Select Player:</span>
+        <select asp-for="SelectedPlayerId" asp-items="@(new SelectList(Model.Players, "Id", "FirstName"))">
+            <option value="">-- choose player --</option>
+        </select>
 
     </label>
 </fieldset>
@@ -27,7 +31,14 @@
     <table>
     <thead><tr><th>Game</th><th>Player</th><th>Number of Spins</th></tr></thead>
     <tbody>
-        <!--TODO: display this list of games with the info above (remember Games has an iCollection of Spins) -->
+        @foreach(var g in Model.Games)
+        {
+            <tr>
+                <td>@g.Id</td>
+                <td>@(g.Player != null ? g.Player.FirstName : "(unknown)")</td>
+                <td>@g.Spins?.Count()</td>
+            </tr>
+        }
 
     </tdbody>
     </table>
